@@ -183,7 +183,8 @@ class ArtworkTests(unittest.TestCase):
             self.assertGreater(delays[1], delays[0])  # The leading edge is tilted.
             css = root.find(f"{ns}style").text
             self.assertIn("infinite", css)
-            self.assertIn("translateY(-4px)", css)
+            self.assertIn("translateY(-4px) scale(1.18)", css)
+            self.assertIn("transform-box:fill-box;transform-origin:center", css)
             self.assertNotIn("opacity", css)
             self.assertNotIn("fill:", css.split("@keyframes")[1])
 

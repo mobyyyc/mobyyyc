@@ -187,7 +187,7 @@ def ribbon_path(index, phase):
     for step in range(13):
         u = step / 12
         envelope = math.sin(math.pi * u) ** 1.1
-        x = 505 + u * 400
+        x = 380 + u * 516
         y = (
             112
             + (index - 12.5) * 2.4
@@ -227,9 +227,9 @@ def hero(theme):
 <linearGradient id="silk" x1="0" y1="0" x2="1" y2=".3"><stop stop-color="{c['muted']}" stop-opacity=".1"/><stop offset=".35" stop-color="{c['accent']}"/><stop offset=".7" stop-color="{c['glow']}"/><stop offset="1" stop-color="{c['accent']}" stop-opacity=".12"/></linearGradient>
 <radialGradient id="atmosphere"><stop stop-color="{c['glow']}" stop-opacity=".10"/><stop offset="1" stop-color="{c['glow']}" stop-opacity="0"/></radialGradient>
 <linearGradient id="edge"><stop stop-color="white" stop-opacity="0"/><stop offset=".16" stop-color="white"/><stop offset=".84" stop-color="white"/><stop offset="1" stop-color="white" stop-opacity="0"/></linearGradient>
-<mask id="fade"><rect x="495" y="20" width="401" height="188" fill="url(#edge)"/></mask>
+<mask id="fade"><rect x="370" y="20" width="526" height="188" fill="url(#edge)"/></mask>
 </defs>
-<ellipse cx="709" cy="112" rx="187" ry="100" fill="url(#atmosphere)"/>
+<ellipse cx="643" cy="112" rx="244" ry="100" fill="url(#atmosphere)"/>
 <g mask="url(#fade)"><g class="flow-motion">{''.join(ribbons)}</g><g class="flow-static">{''.join(still)}</g></g>
 <text x="0" y="73" font-size="16" letter-spacing="2.1" class="muted">STUDENT &amp; BUILDER / @MOBYYYC</text>
 <text x="0" y="147" font-size="72" font-weight="500" letter-spacing="-2.5">Qiyuan Cai</text>
@@ -316,12 +316,12 @@ def calendar_svg(data, theme):
             f'<rect x="{742+level*17}" y="178" width="12" height="12" rx="2.4" fill="{c["levels"][level]}"/>'
         )
     parts.append('<text x="833" y="189" font-size="13" class="muted">More</text>')
-    css = ".day{animation:ripple 5.6s ease-in-out infinite}@keyframes ripple{0%,16%,100%{transform:translateY(0)}8%{transform:translateY(-4px)}}@media(prefers-reduced-motion:reduce){.day{animation:none}}"
+    css = ".day{transform-box:fill-box;transform-origin:center;animation:ripple 5.6s ease-in-out infinite}@keyframes ripple{0%,16%,100%{transform:translateY(0) scale(1)}8%{transform:translateY(-4px) scale(1.18)}}@media(prefers-reduced-motion:reduce){.day{animation:none}}"
     return svg(
         896,
         216,
         "A year of building",
-        f"{data['contributions']} contributions from {data['days'][0]['date']} through {data['as_of']}. The public GitHub calendar, with a gentle diagonal ripple moving left to right; contribution colors stay constant.",
+        f"{data['contributions']} contributions from {data['days'][0]['date']} through {data['as_of']}. The public GitHub calendar, with a gentle diagonal ripple moving left to right. Blocks lift and enlarge slightly while contribution colors stay constant.",
         theme,
         "".join(parts),
         css,

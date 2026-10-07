@@ -21,7 +21,7 @@ python3 -m unittest discover -s tests -v
 
 ## Artwork
 
-Theme-aware `<picture>` sources select light and dark assets. Layered cubic curves create the header's sound ribbons; native SVG path interpolation makes them flow through an eight-second seamless loop. Reduced-motion mode uses a static copy. The contribution calendar repeats a slightly tilted ripple from left to right every 5.6 seconds, lifting blocks by up to four pixels without changing their colors or visibility. All local SVG motion respects `prefers-reduced-motion` and requires no JavaScript, external fonts or third-party image hosting.
+Theme-aware `<picture>` sources select light and dark assets. Layered cubic curves span the right side of the header while leaving the name clear; native SVG path interpolation makes them flow through an eight-second seamless loop. Reduced-motion mode uses a static copy. The contribution calendar repeats a slightly tilted ripple from left to right every 5.6 seconds, lifting blocks by up to four pixels and scaling them around their centers to 118% for a subtle sense of depth. Contribution colors and visibility stay constant; the gaps accommodate the enlarged blocks. All local SVG motion respects `prefers-reduced-motion` and requires no JavaScript, external fonts or third-party image hosting.
 
 Image URLs include a content hash so GitHub image proxies and browsers pick up changed artwork; unchanged artwork keeps the same URL. Each SVG includes a title and description. Metric image alternatives include the current values. Education, introduction and project links remain native Markdown so they reflow on small screens.
 
