@@ -50,7 +50,7 @@ def main():
             "input": {
                 "branch": {
                     "repositoryNameWithOwner": os.environ["GITHUB_REPOSITORY"],
-                    "refName": os.environ["GITHUB_REF_NAME"],
+                    "branchName": os.environ["GITHUB_REF_NAME"],
                 },
                 "expectedHeadOid": git("rev-parse", "HEAD"),
                 "message": {"headline": "chore: refresh profile artwork [skip ci]"},
