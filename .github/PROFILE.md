@@ -23,7 +23,7 @@ python3 -m unittest discover -s tests -v
 
 Theme-aware `<picture>` sources select light and dark assets. Layered cubic curves create the header's sound ribbons; native SVG path interpolation makes them flow through an eight-second seamless loop. Reduced-motion mode uses a static copy. The contribution calendar repeats a slightly tilted ripple from left to right every 5.6 seconds, lifting blocks by up to four pixels without changing their colors or visibility. All local SVG motion respects `prefers-reduced-motion` and requires no JavaScript, external fonts or third-party image hosting.
 
-Each SVG includes a title and description. Metric image alternatives include the current values. Education, introduction and project links remain native Markdown so they reflow on small screens.
+Image URLs include a content hash so GitHub image proxies and browsers pick up changed artwork; unchanged artwork keeps the same URL. Each SVG includes a title and description. Metric image alternatives include the current values. Education, introduction and project links remain native Markdown so they reflow on small screens.
 
 Visual references: [Avi Vashishta](https://github.com/AVIVASHISHTA29/AVIVASHISHTA29), [DenverCoder1](https://github.com/DenverCoder1/DenverCoder1). The SVG generators here are original; no code or artwork is copied from those repositories.
 

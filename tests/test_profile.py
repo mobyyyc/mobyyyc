@@ -1,4 +1,5 @@
 import copy
+import hashlib
 import importlib.util
 import json
 from pathlib import Path
@@ -142,9 +143,16 @@ class ArtworkTests(unittest.TestCase):
 
     def test_readme_points_to_real_assets_and_matches_data(self):
         readme = self.output["README.md"]
-        paths = re.findall(r'(?:src|srcset)="\./([^"]+)"', readme)
-        self.assertEqual(len(paths), 12)
-        self.assertTrue(all(path in self.output for path in paths))
+        images = re.findall(
+            r'(?:src|srcset)="https://raw.githubusercontent.com/mobyyyc/mobyyyc/main/(assets/[^?"]+)\?v=([a-f0-9]{12})"',
+            readme,
+        )
+        self.assertEqual(len(images), 12)
+        for path, version in images:
+            self.assertIn(path, self.output)
+            self.assertEqual(
+                version, hashlib.sha256(self.output[path].encode()).hexdigest()[:12]
+            )
         self.assertIn(f"{self.data['contributions']:,} contributions", readme)
         self.assertIn(self.data["as_of"], readme)
         for field in [
