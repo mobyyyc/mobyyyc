@@ -1,0 +1,36 @@
+name: Refresh profile
+on:
+  schedule:
+    - cron: '17 11 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['scripts/**', 'tests/**', '.github/workflows/update-profile.yml']
+permissions:
+  contents: write
+concurrency:
+  group: profile-update
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out profile
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - name: Refresh public data and artwork
+        run: python scripts/update_profile.py
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - name: Validate generator
+        run: python -m unittest discover -s tests -v
+      - name: Publish a signed update only when generated files changed
+        run: python scripts/publish_profile.py
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
