@@ -21,11 +21,11 @@ python3 -m unittest discover -s tests -v
 
 ## Artwork
 
-Theme-aware `<picture>` sources select light and dark assets. Layered mathematical curves create the header's sound ribbons; smooth CSS transforms give them gentle motion. The calendar reveals diagonally once. The expandable snake follows a continuous serpentine route and restores cells near the end of each loop. All local SVG motion respects `prefers-reduced-motion` and requires no JavaScript, external fonts or third-party image hosting.
+Theme-aware `<picture>` sources select light and dark assets. Layered cubic curves create the header's sound ribbons; native SVG path interpolation makes them flow through an eight-second seamless loop. Reduced-motion mode uses a static copy. The contribution calendar repeats a slightly tilted ripple from left to right every 5.6 seconds, lifting blocks by up to four pixels without changing their colors or visibility. All local SVG motion respects `prefers-reduced-motion` and requires no JavaScript, external fonts or third-party image hosting.
 
 Each SVG includes a title and description. Metric image alternatives include the current values. Education, introduction and project links remain native Markdown so they reflow on small screens.
 
-Visual references: [Avi Vashishta](https://github.com/AVIVASHISHTA29/AVIVASHISHTA29), [DenverCoder1](https://github.com/DenverCoder1/DenverCoder1), and [Platane/snk](https://github.com/Platane/snk). The SVG generators here are original; no code or artwork is copied from those repositories.
+Visual references: [Avi Vashishta](https://github.com/AVIVASHISHTA29/AVIVASHISHTA29), [DenverCoder1](https://github.com/DenverCoder1/DenverCoder1). The SVG generators here are original; no code or artwork is copied from those repositories.
 
 ## Daily signed updates
 

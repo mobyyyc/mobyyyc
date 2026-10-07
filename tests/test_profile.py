@@ -129,7 +129,7 @@ class ArtworkTests(unittest.TestCase):
         assets = [
             (name, text) for name, text in self.output.items() if name.endswith(".svg")
         ]
-        self.assertEqual(len(assets), 14)
+        self.assertEqual(len(assets), 12)
         for name, text in assets:
             with self.subTest(name=name):
                 root = ET.fromstring(text)
@@ -137,13 +137,13 @@ class ArtworkTests(unittest.TestCase):
                 self.assertIsNotNone(root.find("{http://www.w3.org/2000/svg}desc"))
                 self.assertNotIn("<script", text)
                 self.assertNotIn("<image", text)
-                if "@keyframes" in text:
+                if "@keyframes" in text or "<animate" in text:
                     self.assertIn("prefers-reduced-motion:reduce", text)
 
     def test_readme_points_to_real_assets_and_matches_data(self):
         readme = self.output["README.md"]
         paths = re.findall(r'(?:src|srcset)="\./([^"]+)"', readme)
-        self.assertEqual(len(paths), 14)
+        self.assertEqual(len(paths), 12)
         self.assertTrue(all(path in self.output for path in paths))
         self.assertIn(f"{self.data['contributions']:,} contributions", readme)
         self.assertIn(self.data["as_of"], readme)
@@ -155,19 +155,46 @@ class ArtworkTests(unittest.TestCase):
         ]:
             self.assertIn(field, readme)
 
-    def test_snake_visits_each_cell_and_returns_without_jump(self):
-        cells, columns, step = profile.grid_layout(self.data["days"])
-        route, lengths = profile.snake_route(columns, step)
-        self.assertEqual(route[0], route[-1])
-        points = {(round(x, 3), round(y, 3)) for x, y in route}
-        self.assertTrue(
-            all(
-                (round(26 + c["col"] * step, 3), 25 + c["row"] * 16) in points
-                for c in cells
-            )
-        )
-        self.assertTrue(all(0 <= x <= 884 and 0 <= y <= 153 for x, y in route))
-        self.assertTrue(all(a < b for a, b in zip(lengths, lengths[1:])))
+    def test_calendar_wave_preserves_every_cell_and_its_color(self):
+        ns = "{http://www.w3.org/2000/svg}"
+        cells, _, _ = profile.grid_layout(self.data["days"])
+        for theme in profile.THEMES:
+            root = ET.fromstring(profile.calendar_svg(self.data, theme))
+            days = root.findall(f'.//{ns}rect[@class="day"]')
+            self.assertEqual(len(days), len(cells))
+            delays = []
+            for rect, cell in zip(days, cells):
+                self.assertEqual(
+                    rect.attrib["fill"], profile.THEMES[theme]["levels"][cell["level"]]
+                )
+                self.assertNotIn("opacity", rect.attrib)
+                delays.append(
+                    float(re.search(r"delay:([\d.-]+)s", rect.attrib["style"])[1])
+                )
+            self.assertGreater(delays[7], delays[0])  # Wave sweeps left to right.
+            self.assertGreater(delays[1], delays[0])  # The leading edge is tilted.
+            css = root.find(f"{ns}style").text
+            self.assertIn("infinite", css)
+            self.assertIn("translateY(-4px)", css)
+            self.assertNotIn("opacity", css)
+            self.assertNotIn("fill:", css.split("@keyframes")[1])
+
+    def test_header_paths_flow_and_loop_without_a_jump(self):
+        ns = "{http://www.w3.org/2000/svg}"
+        root = ET.fromstring(profile.hero("light"))
+        animations = root.findall(f".//{ns}animate")
+        self.assertEqual(len(animations), 26)
+        for animation in animations:
+            self.assertEqual(animation.attrib["attributeName"], "d")
+            self.assertEqual(animation.attrib["repeatCount"], "indefinite")
+            frames = animation.attrib["values"].split(";")
+            self.assertEqual(frames[0], frames[-1])
+            self.assertNotEqual(frames[0], frames[6])
+            commands = [re.findall("[MC]", frame) for frame in frames]
+            self.assertTrue(all(command == commands[0] for command in commands))
+        css = root.find(f"{ns}style").text
+        self.assertIn(".flow-motion{display:none}", css)
+        self.assertIn(".flow-static{display:inline}", css)
 
     def test_tracked_assets_are_reproducible(self):
         for name, text in self.output.items():

@@ -52,8 +52,6 @@ Turning ideas into structured project plans with AI-assisted refinement.<br>
   <img src="./assets/metric-followers-light.svg" width="264" alt="8 followers, on GitHub">
 </picture>
 
-<sub>Stars and followers are current totals. Contributions and public PRs cover the calendar below.</sub>
-
 <br>
 
 ### A year of building
@@ -63,20 +61,6 @@ Turning ideas into structured project plans with AI-assisted refinement.<br>
   <img src="./assets/contributions-light.svg" width="896" alt="719 contributions from 2025-10-05 through 2026-10-07.">
 </picture>
 
-<details>
-<summary>Watch the contribution snake</summary>
 <br>
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./assets/snake-dark.svg">
-  <img src="./assets/snake-light.svg" width="896" alt="An animated snake traversing my contribution calendar.">
-</picture>
-
-<sub>Custom animation, inspired by [Platane/snk](https://github.com/Platane/snk).</sub>
-</details>
-
-<br>
-
-[Pull Shark](https://github.com/mobyyyc?achievement=pull-shark&amp;tab=achievements) &nbsp; · &nbsp; ![Profile views — approximate page hits](https://komarev.com/ghpvc/?username=mobyyyc&label=PROFILE+VIEWS&color=68717d&style=flat-square)
-
-<sub>Refreshed daily · [How the stats work](./.github/PROFILE.md)</sub>
+[Pull Shark](https://github.com/mobyyyc?achievement=pull-shark&amp;tab=achievements) &nbsp; · &nbsp; ![Profile views](https://komarev.com/ghpvc/?username=mobyyyc&label=PROFILE+VIEWS&color=68717d&style=flat-square)

@@ -180,29 +180,47 @@ def svg(width, height, title, desc, theme, content, css=""):
     return result
 
 
+def ribbon_path(index, phase):
+    """Smooth cubic curves with matching commands in every animation frame."""
+    points = []
+    for step in range(13):
+        u = step / 12
+        envelope = math.sin(math.pi * u) ** 1.1
+        x = 505 + u * 400
+        y = (
+            112
+            + (index - 12.5) * 2.4
+            + envelope
+            * (
+                38 * math.sin(u * 2.2 * math.pi + index * 0.055 - phase)
+                + 12 * math.sin(u * 4.1 * math.pi - index * 0.07 - phase)
+            )
+        )
+        points.append((x, y))
+    path = [f"M{points[0][0]:.2f},{points[0][1]:.2f}"]
+    for i, (left, right) in enumerate(zip(points, points[1:])):
+        before = points[max(0, i - 1)]
+        after = points[min(len(points) - 1, i + 2)]
+        control1 = tuple(left[j] + (right[j] - before[j]) / 6 for j in range(2))
+        control2 = tuple(right[j] - (after[j] - left[j]) / 6 for j in range(2))
+        path.append(
+            "C" + " ".join(f"{x:.2f},{y:.2f}" for x, y in [control1, control2, right])
+        )
+    return " ".join(path)
+
+
 def hero(theme):
     c = THEMES[theme]
-    ribbons = []
+    ribbons, still = [], []
     for i in range(26):
-        points = []
-        for step in range(101):
-            u = step / 100
-            envelope = math.sin(math.pi * u) ** 1.1
-            x = 505 + u * 400
-            y = (
-                112
-                + (i - 12.5) * 2.4
-                + envelope
-                * (
-                    38 * math.sin(u * 2.2 * math.pi + i * 0.055)
-                    + 12 * math.sin(u * 4.1 * math.pi - i * 0.07)
-                )
-            )
-            points.append(f"{x:.2f},{y:.2f}")
-        path = "M" + " L".join(points)
+        frames = [ribbon_path(i, frame * math.tau / 24) for frame in range(24)]
+        frames.append(frames[0])
         opacity = 0.19 + 0.34 * math.sin(i / 25 * math.pi)
+        path = f'<path d="{frames[0]}" fill="none" stroke="url(#silk)" stroke-width="1.05" opacity="{opacity:.3f}">'
+        still.append(path + "</path>")
         ribbons.append(
-            f'<path class="ribbon" d="{path}" fill="none" stroke="url(#silk)" stroke-width="1.05" opacity="{opacity:.3f}" style="--drift:{(i-12.5)*.24:.2f}px;animation-delay:{-i*.23:.2f}s"/>'
+            path
+            + f'<animate attributeName="d" values="{";".join(frames)}" dur="8s" calcMode="linear" repeatCount="indefinite"/></path>'
         )
     content = f"""<defs>
 <linearGradient id="silk" x1="0" y1="0" x2="1" y2=".3"><stop stop-color="{c['muted']}" stop-opacity=".1"/><stop offset=".35" stop-color="{c['accent']}"/><stop offset=".7" stop-color="{c['glow']}"/><stop offset="1" stop-color="{c['accent']}" stop-opacity=".12"/></linearGradient>
@@ -211,17 +229,17 @@ def hero(theme):
 <mask id="fade"><rect x="495" y="20" width="401" height="188" fill="url(#edge)"/></mask>
 </defs>
 <ellipse cx="709" cy="112" rx="187" ry="100" fill="url(#atmosphere)"/>
-<g mask="url(#fade)">{''.join(ribbons)}</g>
+<g mask="url(#fade)"><g class="flow-motion">{''.join(ribbons)}</g><g class="flow-static">{''.join(still)}</g></g>
 <text x="0" y="73" font-size="16" letter-spacing="2.1" class="muted">STUDENT &amp; BUILDER / @MOBYYYC</text>
 <text x="0" y="147" font-size="72" font-weight="500" letter-spacing="-2.5">Qiyuan Cai</text>
 <path d="M1 185 H48" stroke="{c['accent']}" stroke-width="2"/>
 """
-    css = ".ribbon{transform-origin:710px 112px;animation:silk-drift 14s ease-in-out infinite alternate}@keyframes silk-drift{from{transform:translateY(var(--drift)) rotate(-1deg) scaleY(.93)}to{transform:translateY(calc(var(--drift) * -1)) rotate(1deg) scaleY(1.08)}}@media(prefers-reduced-motion:reduce){.ribbon{animation:none}}"
+    css = ".flow-static{display:none}@media(prefers-reduced-motion:reduce){.flow-motion{display:none}.flow-static{display:inline}}"
     return svg(
         896,
         224,
         "Qiyuan Cai",
-        "Computer Science with an AI specialization at the University of Waterloo. Softly flowing, layered sound ribbons.",
+        "Computer Science with an AI specialization at the University of Waterloo. Flowing, layered sound ribbons.",
         theme,
         content,
         css,
@@ -236,8 +254,7 @@ def stars_svg(data, theme):
 <text x="896" y="40" text-anchor="end" font-size="36" font-weight="500">{count:,}<tspan class="muted" font-size="30"> / {target:,}</tspan></text>
 <rect x="0" y="73" width="896" height="8" rx="4" fill="{c['line']}"/>
 <rect class="earned" x="0" y="73" width="{896*count/target:.3f}" height="8" rx="4" fill="{c['accent']}"/>
-<text x="0" y="120" font-size="25" class="muted">Next milestone: {target:,} stars</text>
-<text x="896" y="120" font-size="25" text-anchor="end" class="muted">Across my public projects</text>"""
+<text x="0" y="120" font-size="25" class="muted">Next milestone: {target:,} stars</text>"""
     css = ".earned{transform-origin:0 0;animation:grow .9s cubic-bezier(.22,1,.36,1) both}@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}@media(prefers-reduced-motion:reduce){.earned{animation:none}}"
     return svg(
         896,
@@ -282,7 +299,8 @@ def calendar_svg(data, theme):
                 f'<text x="{x:.2f}" y="31" font-size="13" class="muted">{month}</text>'
             )
             previous = month
-        delay = (cell["col"] + cell["row"] * 0.55) * 0.035
+        # Negative delays start a staggered ripple immediately, with a slight diagonal tilt.
+        delay = -5.6 + cell["col"] * 0.06 + cell["row"] * 0.04
         parts.append(
             f'<rect class="day" x="{x:.2f}" y="{y}" width="{step-4:.2f}" height="12" rx="2.4" fill="{c["levels"][cell["level"]]}" style="animation-delay:{delay:.3f}s"><title>{cell["date"]}: {cell["count"]} contributions</title></rect>'
         )
@@ -297,76 +315,12 @@ def calendar_svg(data, theme):
             f'<rect x="{742+level*17}" y="178" width="12" height="12" rx="2.4" fill="{c["levels"][level]}"/>'
         )
     parts.append('<text x="833" y="189" font-size="13" class="muted">More</text>')
-    css = ".day{animation:arrive .65s cubic-bezier(.22,1,.36,1) both}@keyframes arrive{from{opacity:.3;transform:translateY(2px)}to{opacity:1;transform:translateY(0)}}@media(prefers-reduced-motion:reduce){.day{animation:none}}"
+    css = ".day{animation:ripple 5.6s ease-in-out infinite}@keyframes ripple{0%,16%,100%{transform:translateY(0)}8%{transform:translateY(-4px)}}@media(prefers-reduced-motion:reduce){.day{animation:none}}"
     return svg(
         896,
         216,
         "A year of building",
-        f"{data['contributions']} contributions from {data['days'][0]['date']} through {data['as_of']}. A diagonal reveal of the public GitHub calendar.",
-        theme,
-        "".join(parts),
-        css,
-    )
-
-
-def snake_route(columns, step):
-    route = []
-    for col in range(columns):
-        rows = range(7) if col % 2 == 0 else range(6, -1, -1)
-        route.extend((26 + col * step, 25 + row * 16) for row in rows)
-    x, y = route[-1]
-    route.extend([(x + step, y), (x + step, 143), (8, 143), (8, 25), route[0]])
-    lengths = [0.0]
-    for left, right in zip(route, route[1:]):
-        lengths.append(lengths[-1] + math.dist(left, right))
-    return route, lengths
-
-
-def snake_svg(data, theme):
-    c = THEMES[theme]
-    cells, columns, step = grid_layout(data["days"])
-    route, lengths = snake_route(columns, step)
-    total = lengths[-1]
-    duration = 48
-    frames = "".join(
-        f"{distance/total*100:.5f}%{{transform:translate({point[0]:.3f}px,{point[1]:.3f}px)}}"
-        for point, distance in zip(route, lengths)
-    )
-    css = f"@keyframes travel{{{frames}}}.segment{{animation:travel {duration}s linear infinite both}}"
-    parts = []
-    arrivals = {
-        (round(point[0], 3), round(point[1], 3)): distance / total * 100
-        for point, distance in zip(route[:-1], lengths[:-1])
-    }
-    for i, cell in enumerate(cells):
-        x, y = 26 + cell["col"] * step, 25 + cell["row"] * 16
-        style = ""
-        if cell["count"]:
-            arrival = arrivals[(round(x, 3), round(y, 3))]
-            before = max(0, arrival - 0.08)
-            after = min(91, arrival + 0.25)
-            css += f"@keyframes eat{i}{{0%,{before:.5f}%{{opacity:1}}{after:.5f}%,92%{{opacity:.14}}99%,100%{{opacity:1}}}}"
-            style = (
-                f' style="animation:eat{i} {duration}s linear infinite" class="food"'
-            )
-        parts.append(
-            f'<rect x="{x:.3f}" y="{y}" width="{step-4:.3f}" height="12" rx="2.4" fill="{c["levels"][cell["level"]]}"{style}/>'
-        )
-    for i in reversed(range(7)):
-        parts.append(
-            f'<g class="segment" style="animation-delay:{i*.105:.3f}s"><rect width="{step-4:.3f}" height="12" rx="3.5" fill="{c["head"]}" opacity="{1-i*.095:.3f}"/>'
-        )
-        if i == 0:
-            parts.append(
-                f'<circle cx="4" cy="4" r=".8" fill="{c["levels"][0]}"/><circle cx="8" cy="4" r=".8" fill="{c["levels"][0]}"/>'
-            )
-        parts.append("</g>")
-    css += "@media(prefers-reduced-motion:reduce){.segment{display:none}.food{animation:none!important}}"
-    return svg(
-        896,
-        165,
-        "Contribution snake",
-        "An original snake traverses the public contribution calendar, clearing active cells and restoring them each loop. Inspired by Platane/snk. Reduced-motion mode shows a static calendar.",
+        f"{data['contributions']} contributions from {data['days'][0]['date']} through {data['as_of']}. The public GitHub calendar, with a gentle diagonal ripple moving left to right; contribution colors stay constant.",
         theme,
         "".join(parts),
         css,
@@ -432,28 +386,15 @@ Turning ideas into structured project plans with AI-assisted refinement.<br>
 
 {cards}
 
-<sub>Stars and followers are current totals. Contributions and public PRs cover the calendar below.</sub>
-
 <br>
 
 ### A year of building
 
 {picture('contributions',f"{data['contributions']:,} contributions from {data['days'][0]['date']} through {data['as_of']}.")}
 
-<details>
-<summary>Watch the contribution snake</summary>
 <br>
 
-{picture('snake','An animated snake traversing my contribution calendar.')}
-
-<sub>Custom animation, inspired by [Platane/snk](https://github.com/Platane/snk).</sub>
-</details>
-
-<br>
-
-[Pull Shark](https://github.com/{u}?achievement=pull-shark&amp;tab=achievements) &nbsp; · &nbsp; ![Profile views — approximate page hits](https://komarev.com/ghpvc/?username={u}&label=PROFILE+VIEWS&color=68717d&style=flat-square)
-
-<sub>Refreshed daily · [How the stats work](./.github/PROFILE.md)</sub>
+[Pull Shark](https://github.com/{u}?achievement=pull-shark&amp;tab=achievements) &nbsp; · &nbsp; ![Profile views](https://komarev.com/ghpvc/?username={u}&label=PROFILE+VIEWS&color=68717d&style=flat-square)
 """
 
 
@@ -469,7 +410,6 @@ def build(data):
             ("hero", lambda: hero(theme)),
             ("stars", lambda: stars_svg(data, theme)),
             ("contributions", lambda: calendar_svg(data, theme)),
-            ("snake", lambda: snake_svg(data, theme)),
         ]:
             output[f"assets/{name}-{theme}.svg"] = fn()
         for name, key, label, context in [
