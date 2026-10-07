@@ -41,15 +41,15 @@ Turning ideas into structured project plans with AI-assisted refinement.<br>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="./assets/metric-contributions-dark.svg">
-  <img src="./assets/metric-contributions-light.svg" width="280" alt="716 GitHub contributions, past year">
+  <img src="./assets/metric-contributions-light.svg" width="264" alt="716 GitHub contributions, past year">
 </picture>
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="./assets/metric-prs-dark.svg">
-  <img src="./assets/metric-prs-light.svg" width="280" alt="4 public pull requests, past year">
+  <img src="./assets/metric-prs-light.svg" width="264" alt="4 public pull requests, past year">
 </picture>
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="./assets/metric-followers-dark.svg">
-  <img src="./assets/metric-followers-light.svg" width="280" alt="8 followers, on GitHub">
+  <img src="./assets/metric-followers-light.svg" width="264" alt="8 followers, on GitHub">
 </picture>
 
 <sub>Stars and followers are current totals. Contributions and public PRs cover the calendar below.</sub>

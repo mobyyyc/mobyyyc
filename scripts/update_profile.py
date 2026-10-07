@@ -383,7 +383,7 @@ def picture(name, alt, width=896):
 def render_readme(data):
     u = data["username"]
     cards = "\n".join(
-        picture(name, f"{data[key]:,} {label}, {context}", 280)
+        picture(name, f"{data[key]:,} {label}, {context}", 264)
         for name, key, label, context in [
             (
                 "metric-contributions",

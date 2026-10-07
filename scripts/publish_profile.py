@@ -6,6 +6,7 @@ import json
 import os
 from pathlib import Path
 import subprocess
+import urllib.error
 import urllib.request
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -66,10 +67,11 @@ def main():
             "User-Agent": "mobyyyc-profile/1.0",
         },
     )
-    with urllib.request.urlopen(req, timeout=45) as response:
+    with urllib.request.urlopen(req, timeout=90) as response:
         result = json.load(response)
     if result.get("errors"):
-        raise SystemExit(json.dumps(result["errors"]))
+        print("::error::" + json.dumps(result["errors"]))
+        raise SystemExit("GitHub rejected the signed update")
     commit = result["data"]["createCommitOnBranch"]["commit"]
     print(f"Updated profile: {commit['url']}")
     if not (commit.get("signature") or {}).get("isValid"):
@@ -79,4 +81,15 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except urllib.error.HTTPError as error:
+        try:
+            detail = json.load(error).get("message", error.reason)
+        except (ValueError, AttributeError):
+            detail = error.reason
+        print(f"::error::GitHub publication failed: HTTP {error.code}: {detail}")
+        raise SystemExit(1) from error
+    except (urllib.error.URLError, TimeoutError) as error:
+        print(f"::error::GitHub publication connection failed: {error}")
+        raise SystemExit(1) from error
