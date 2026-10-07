@@ -41,7 +41,7 @@ Turning ideas into structured project plans with AI-assisted refinement.<br>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="./assets/metric-contributions-dark.svg">
-  <img src="./assets/metric-contributions-light.svg" width="264" alt="716 GitHub contributions, past year">
+  <img src="./assets/metric-contributions-light.svg" width="264" alt="719 GitHub contributions, past year">
 </picture>
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="./assets/metric-prs-dark.svg">
@@ -60,7 +60,7 @@ Turning ideas into structured project plans with AI-assisted refinement.<br>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="./assets/contributions-dark.svg">
-  <img src="./assets/contributions-light.svg" width="896" alt="716 contributions from 2025-10-05 through 2026-10-07.">
+  <img src="./assets/contributions-light.svg" width="896" alt="719 contributions from 2025-10-05 through 2026-10-07.">
 </picture>
 
 <details>
