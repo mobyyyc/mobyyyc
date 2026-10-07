@@ -70,7 +70,8 @@ def main():
     with urllib.request.urlopen(req, timeout=90) as response:
         result = json.load(response)
     if result.get("errors"):
-        print("::error::" + json.dumps(result["errors"]))
+        for error in result["errors"]:
+            print("::error::" + error.get("message", "Unknown GraphQL error"))
         raise SystemExit("GitHub rejected the signed update")
     commit = result["data"]["createCommitOnBranch"]["commit"]
     print(f"Updated profile: {commit['url']}")
