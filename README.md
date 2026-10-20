@@ -34,8 +34,8 @@ Turning ideas into structured project plans with AI-assisted refinement.<br>
 
 <a href="https://github.com/mobyyyc?tab=repositories&amp;sort=stargazers">
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mobyyyc/mobyyyc/main/assets/stars-dark.svg?v=29969fcda3c3">
-  <img src="https://raw.githubusercontent.com/mobyyyc/mobyyyc/main/assets/stars-light.svg?v=2e79e8714114" width="896" alt="0 stars earned on public projects. Next milestone: 10 stars.">
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mobyyyc/mobyyyc/main/assets/stars-dark.svg?v=b2994e5edfbe">
+  <img src="https://raw.githubusercontent.com/mobyyyc/mobyyyc/main/assets/stars-light.svg?v=a94d3c39180a" width="896" alt="0 stars earned on public projects. Next milestone: 10 stars.">
 </picture>
 </a>
 
@@ -57,8 +57,8 @@ Turning ideas into structured project plans with AI-assisted refinement.<br>
 ### A year of building
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mobyyyc/mobyyyc/main/assets/contributions-dark.svg?v=4167947e0203">
-  <img src="https://raw.githubusercontent.com/mobyyyc/mobyyyc/main/assets/contributions-light.svg?v=b0e360bb0815" width="896" alt="754 contributions from 2025-10-19 through 2026-10-19.">
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mobyyyc/mobyyyc/main/assets/contributions-dark.svg?v=acb269731099">
+  <img src="https://raw.githubusercontent.com/mobyyyc/mobyyyc/main/assets/contributions-light.svg?v=7b77568c0557" width="896" alt="754 contributions from 2025-10-19 through 2026-10-20.">
 </picture>
 
 <br>
