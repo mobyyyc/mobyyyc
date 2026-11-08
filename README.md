@@ -34,8 +34,8 @@ Turning ideas into structured project plans with AI-assisted refinement.<br>
 
 <a href="https://github.com/mobyyyc?tab=repositories&amp;sort=stargazers">
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mobyyyc/mobyyyc/main/assets/stars-dark.svg?v=daf6bd18a302">
-  <img src="https://raw.githubusercontent.com/mobyyyc/mobyyyc/main/assets/stars-light.svg?v=b7b8e79259b1" width="896" alt="0 stars earned on public projects. Next milestone: 10 stars.">
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mobyyyc/mobyyyc/main/assets/stars-dark.svg?v=a64e1e26799e">
+  <img src="https://raw.githubusercontent.com/mobyyyc/mobyyyc/main/assets/stars-light.svg?v=0a20e4b88394" width="896" alt="0 stars earned on public projects. Next milestone: 10 stars.">
 </picture>
 </a>
 
@@ -48,8 +48,8 @@ Turning ideas into structured project plans with AI-assisted refinement.<br>
   <img src="https://raw.githubusercontent.com/mobyyyc/mobyyyc/main/assets/metric-prs-light.svg?v=b631ffd95f4f" width="264" alt="2 public pull requests, past year">
 </picture>
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mobyyyc/mobyyyc/main/assets/metric-followers-dark.svg?v=c8523c137d94">
-  <img src="https://raw.githubusercontent.com/mobyyyc/mobyyyc/main/assets/metric-followers-light.svg?v=eb443ba4438f" width="264" alt="8 followers, on GitHub">
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mobyyyc/mobyyyc/main/assets/metric-followers-dark.svg?v=fa38c5219129">
+  <img src="https://raw.githubusercontent.com/mobyyyc/mobyyyc/main/assets/metric-followers-light.svg?v=d5a2c4abe884" width="264" alt="9 followers, on GitHub">
 </picture>
 
 <br>
@@ -57,8 +57,8 @@ Turning ideas into structured project plans with AI-assisted refinement.<br>
 ### A year of building
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mobyyyc/mobyyyc/main/assets/contributions-dark.svg?v=28d40057d086">
-  <img src="https://raw.githubusercontent.com/mobyyyc/mobyyyc/main/assets/contributions-light.svg?v=64ed68ce43c6" width="896" alt="838 contributions from 2025-11-02 through 2026-11-07.">
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mobyyyc/mobyyyc/main/assets/contributions-dark.svg?v=437f51a0f577">
+  <img src="https://raw.githubusercontent.com/mobyyyc/mobyyyc/main/assets/contributions-light.svg?v=7fbab35079b3" width="896" alt="838 contributions from 2025-11-09 through 2026-11-08.">
 </picture>
 
 <br>
