@@ -16,6 +16,10 @@ Currently exploring sound recreation, quantitative research, and AI-assisted wor
 
 ### Selected projects
 
+**[Sliplet ↗](https://github.com/mobyyyc/Sliplet)**<br>
+A native iOS app to scan and review receipts, search saved purchases, and split bills by item.<br>
+<sub>Swift · SwiftUI · Vision OCR</sub>
+
 **[NeuroWave ↗](https://github.com/mobyyyc/NeuroWave)**<br>
 Exploring sound recreation by learning synthesizer parameters from audio.<br>
 <sub>Python · PyTorch · Audio synthesis</sub>
