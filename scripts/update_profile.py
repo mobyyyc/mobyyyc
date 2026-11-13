@@ -301,6 +301,10 @@ Turning ideas into structured project plans with AI-assisted refinement.<br>
 <br>
 
 {artwork('contributions',f"{data['contributions']:,} contributions from {data['days'][0]['date']} through {data['as_of']}.")}
+
+<br>
+
+![Profile views](https://komarev.com/ghpvc/?username={u}&label=PROFILE+VIEWS&color=68717d&style=flat-square)
 """
 
 
