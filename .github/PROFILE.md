@@ -8,29 +8,22 @@ python3 scripts/update_profile.py --offline   # Rebuild the tracked snapshot
 python3 -m unittest discover -s tests -v
 ```
 
-## What the numbers mean
+## Contribution calendar
 
-- **Stars earned:** current stars on owned, public, non-fork repositories. Every repository page is fetched. The next milestone advances through 10, 50, 100, 250, 500, 1,000 and larger targets. Zero stars produces an empty bar.
-- **Contributions:** daily counts in GitHub's publicly visible past-year calendar. This is not a commit count. GitHub's contribution rules apply; anonymized private counts may appear if the account publicly enables them.
-- **Pull requests:** public PRs authored by Qiyuan, open or closed, created within the calendar's date range.
-- **Followers:** the current public follower count.
-- **Profile views:** a separate [Komarev counter](https://github.com/antonkomarev/github-profile-views-counter). These are approximate image requests/page hits, not unique people. Refreshes, proxies and caching affect the number.
-- **Pull Shark:** the account's existing native GitHub achievement, not an inferred or third-party award.
-
-`data/profile.json` contains the public snapshot and its sources. Dates follow the fetched calendar. Updates fail if parsing is incomplete, annual totals disagree or PR search results are incomplete. Fetch/render failures leave the previous artwork intact.
+The calendar uses daily counts from GitHub's public past-year contribution calendar. Anonymized private counts may appear if the account publicly enables them. The snapshot lives in `data/profile.json`. Incomplete calendars or mismatched totals fail the refresh and preserve the previous artwork.
 
 ## Artwork
 
 Theme-aware `<picture>` sources select light and dark assets. Layered cubic curves span the right side of the header while leaving the name clear; native SVG path interpolation makes them flow through an eight-second seamless loop. Reduced-motion mode uses a static copy. The contribution calendar repeats a slightly tilted ripple from left to right every 5.6 seconds, lifting blocks by up to four pixels and scaling them around their centers to 118% for a subtle sense of depth. Contribution colors and visibility stay constant; the gaps accommodate the enlarged blocks. All local SVG motion respects `prefers-reduced-motion` and requires no JavaScript, external fonts or third-party image hosting.
 
-Image URLs include a content hash so GitHub image proxies and browsers pick up changed artwork; unchanged artwork keeps the same URL. Each SVG includes a title and description. Metric image alternatives include the current values. Education, introduction and project links remain native Markdown so they reflow on small screens.
+Image URLs include a content hash so GitHub image proxies and browsers pick up changed artwork; unchanged artwork keeps the same URL. Each SVG includes a title and description. Education, introduction and project links remain native Markdown so they reflow on small screens.
 
 Visual references: [Avi Vashishta](https://github.com/AVIVASHISHTA29/AVIVASHISHTA29), [DenverCoder1](https://github.com/DenverCoder1/DenverCoder1). The SVG generators here are original; no code or artwork is copied from those repositories.
 
 ## Daily signed updates
 
-`.github/workflows/update-profile.yml` validates the generator and refreshes public stats daily at 11:17 UTC, on relevant source changes, or through **Run workflow**. It uses the automatically supplied, short-lived `GITHUB_TOKEN` with `contents: write`; no personal token or hosting service is needed.
+`.github/workflows/update-profile.yml` validates the generator and refreshes the contribution calendar daily at 11:17 UTC, on relevant source changes, or through **Run workflow**. It uses the automatically supplied, short-lived `GITHUB_TOKEN` with `contents: write`; no personal token or hosting service is needed.
 
 If generated files change, `scripts/publish_profile.py` publishes only README, the public snapshot, and SVG assets through GitHub's `createCommitOnBranch` API. The API supports GitHub-signed commits; the publisher checks the returned signature. An expected HEAD protects against concurrent edits. Identical outputs produce no commit, and fetch/render failures preserve the previous artwork. Token-generated commits do not trigger another run.
 
-GitHub can disable scheduled workflows in public repositories after 60 days without repository activity. If that happens, re-enable the workflow in the Actions tab. Existing artwork remains visible. The view counter updates independently.
+GitHub can disable scheduled workflows in public repositories after 60 days without repository activity. If that happens, re-enable the workflow in the Actions tab. Existing artwork remains visible.

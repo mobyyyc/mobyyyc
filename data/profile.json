@@ -1853,15 +1853,8 @@
       "level": 1
     }
   ],
-  "followers": 9,
-  "pull_requests": 3,
   "sources": {
-    "calendar": "https://github.com/users/mobyyyc/contributions",
-    "followers": "Current public follower count.",
-    "pull_requests": "Public authored PRs created within the calendar date range, open or closed.",
-    "stars": "Current stars on owned, public, non-fork repositories; every repository page."
+    "calendar": "https://github.com/users/mobyyyc/contributions"
   },
-  "star_target": 10,
-  "stars": 0,
   "username": "mobyyyc"
 }

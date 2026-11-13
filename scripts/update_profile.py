@@ -9,10 +9,8 @@ import hashlib
 from html.parser import HTMLParser
 import json
 import math
-import os
 from pathlib import Path
 import re
-import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
 
@@ -22,7 +20,6 @@ THEMES = {
     "light": dict(
         ink="#202329",
         muted="#68717d",
-        line="#e9edf1",
         accent="#567995",
         glow="#9cb3c7",
         head="#405e78",
@@ -31,7 +28,6 @@ THEMES = {
     "dark": dict(
         ink="#e9edf2",
         muted="#9da8b5",
-        line="#242d38",
         accent="#b0c8dc",
         glow="#7899b8",
         head="#d5e5f2",
@@ -43,16 +39,13 @@ THEMES = {
 def request(url):
     headers = {
         "User-Agent": "mobyyyc-profile/1.0",
-        "Accept": "application/vnd.github+json",
+        "Accept": "text/html",
     }
-    token = os.environ.get("GITHUB_TOKEN")
-    if token and urllib.parse.urlparse(url).hostname == "api.github.com":
-        headers["Authorization"] = f"Bearer {token}"
     with urllib.request.urlopen(
         urllib.request.Request(url, headers=headers), timeout=40
     ) as response:
         text = response.read().decode()
-    return json.loads(text) if url.startswith("https://api.github.com/") else text
+    return text
 
 
 class CalendarParser(HTMLParser):
@@ -114,58 +107,17 @@ def parse_calendar(source, minimum_days=300):
     return days
 
 
-def next_milestone(stars):
-    if stars < 0:
-        raise ValueError("Negative stars")
-    for target in [10, 50, 100, 250, 500, 1000, 2500, 5000, 10000]:
-        if stars < target:
-            return target
-    return (stars // 10000 + 1) * 10000
-
-
 def fetch_profile(username=USERNAME):
     if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9-]{0,38}", username):
         raise ValueError("Invalid username")
-    user = request(f"https://api.github.com/users/{username}")
     days = parse_calendar(request(f"https://github.com/users/{username}/contributions"))
-    repos = []
-    page = 1
-    while True:
-        batch = request(
-            f"https://api.github.com/users/{username}/repos?type=owner&per_page=100&page={page}"
-        )
-        repos.extend(batch)
-        if len(batch) < 100:
-            break
-        page += 1
-    stars = sum(
-        repo["stargazers_count"]
-        for repo in repos
-        if not repo["fork"] and repo["owner"]["login"].lower() == username.lower()
-    )
-    query = urllib.parse.urlencode(
-        {
-            "q": f"author:{username} type:pr is:public created:{days[0]['date']}..{days[-1]['date']}",
-            "per_page": 1,
-        }
-    )
-    prs = request(f"https://api.github.com/search/issues?{query}")
-    if prs.get("incomplete_results"):
-        raise ValueError("Incomplete PR search")
     return dict(
         username=username,
         as_of=days[-1]["date"],
-        followers=user["followers"],
-        stars=stars,
-        star_target=next_milestone(stars),
-        pull_requests=prs["total_count"],
         contributions=sum(day["count"] for day in days),
         days=days,
         sources={
             "calendar": f"https://github.com/users/{username}/contributions",
-            "stars": "Current stars on owned, public, non-fork repositories; every repository page.",
-            "pull_requests": "Public authored PRs created within the calendar date range, open or closed.",
-            "followers": "Current public follower count.",
         },
     )
 
@@ -247,34 +199,6 @@ def hero(theme):
     )
 
 
-def stars_svg(data, theme):
-    c = THEMES[theme]
-    count = data["stars"]
-    target = data["star_target"]
-    content = f"""<text x="0" y="38" font-size="32" font-weight="500">Stars earned</text>
-<text x="896" y="40" text-anchor="end" font-size="36" font-weight="500">{count:,}<tspan class="muted" font-size="30"> / {target:,}</tspan></text>
-<rect x="0" y="73" width="896" height="8" rx="4" fill="{c['line']}"/>
-<rect class="earned" x="0" y="73" width="{896*count/target:.3f}" height="8" rx="4" fill="{c['accent']}"/>
-<text x="0" y="120" font-size="25" class="muted">Next milestone: {target:,} stars</text>"""
-    css = ".earned{transform-origin:0 0;animation:grow .9s cubic-bezier(.22,1,.36,1) both}@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}@media(prefers-reduced-motion:reduce){.earned{animation:none}}"
-    return svg(
-        896,
-        148,
-        "Stars earned",
-        f"{count} stars on owned public non-fork repositories. Next milestone: {target}. Updated {data['as_of']}.",
-        theme,
-        content,
-        css,
-    )
-
-
-def metric_svg(value, label, context, theme):
-    content = f"""<text x="0" y="47" font-size="40" font-weight="500" letter-spacing="-1">{value:,}</text>
-<text x="0" y="78" font-size="17">{label}</text>
-<text x="0" y="104" font-size="13" class="muted">{context}</text>"""
-    return svg(280, 124, label, f"{value} {label.lower()}, {context}.", theme, content)
-
-
 def grid_layout(days):
     start = dt.date.fromisoformat(days[0]["date"])
     start -= dt.timedelta(days=(start.weekday() + 1) % 7)
@@ -343,19 +267,6 @@ def render_readme(data, versions):
         return picture(name, alt, versions, width)
 
     u = data["username"]
-    cards = "\n".join(
-        artwork(name, f"{data[key]:,} {label}, {context}", 264)
-        for name, key, label, context in [
-            (
-                "metric-contributions",
-                "contributions",
-                "GitHub contributions",
-                "past year",
-            ),
-            ("metric-prs", "pull_requests", "public pull requests", "past year"),
-            ("metric-followers", "followers", "followers", "on GitHub"),
-        ]
-    )
     return f"""<!-- Generated by scripts/update_profile.py. Edit profile copy in render_readme(). -->
 {artwork('hero','Qiyuan Cai — student and builder')}
 
@@ -369,7 +280,7 @@ Currently exploring sound recreation, quantitative research, and AI-assisted wor
 
 <br>
 
-### Selected projects
+### Projects
 
 **[Sliplet ↗](https://github.com/{u}/Sliplet)**<br>
 A native iOS app to scan and review receipts, search saved purchases, and split bills by item.<br>
@@ -389,23 +300,7 @@ Turning ideas into structured project plans with AI-assisted refinement.<br>
 
 <br>
 
-### By the numbers
-
-<a href="https://github.com/{u}?tab=repositories&amp;sort=stargazers">
-{artwork('stars',f"{data['stars']:,} stars earned on public projects. Next milestone: {data['star_target']:,} stars.")}
-</a>
-
-{cards}
-
-<br>
-
-### A year of building
-
 {artwork('contributions',f"{data['contributions']:,} contributions from {data['days'][0]['date']} through {data['as_of']}.")}
-
-<br>
-
-[Pull Shark](https://github.com/{u}?achievement=pull-shark&amp;tab=achievements) &nbsp; · &nbsp; ![Profile views](https://komarev.com/ghpvc/?username={u}&label=PROFILE+VIEWS&color=68717d&style=flat-square)
 """
 
 
@@ -418,18 +313,9 @@ def build(data):
     for theme in THEMES:
         for name, fn in [
             ("hero", lambda: hero(theme)),
-            ("stars", lambda: stars_svg(data, theme)),
             ("contributions", lambda: calendar_svg(data, theme)),
         ]:
             output[f"assets/{name}-{theme}.svg"] = fn()
-        for name, key, label, context in [
-            ("contributions", "contributions", "Contributions", "Past year"),
-            ("prs", "pull_requests", "Pull requests", "Public · past year"),
-            ("followers", "followers", "Followers", "On GitHub"),
-        ]:
-            output[f"assets/metric-{name}-{theme}.svg"] = metric_svg(
-                data[key], label, context, theme
-            )
     versions = {
         name: hashlib.sha256(text.encode()).hexdigest()[:12]
         for name, text in output.items()
@@ -455,7 +341,7 @@ def main():
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(text, encoding="utf-8")
     print(
-        f"Generated {len(output)-2} SVGs: {data['contributions']} contributions, {data['stars']} stars, {data['pull_requests']} PRs, {data['followers']} followers. Calendar through {data['as_of']}."
+        f"Generated {len(output)-2} SVGs: {data['contributions']} contributions. Calendar through {data['as_of']}."
     )
 
 

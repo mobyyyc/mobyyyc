@@ -1,11 +1,9 @@
-import copy
 import hashlib
 import importlib.util
 import json
 from pathlib import Path
 import re
 import unittest
-from unittest.mock import patch
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -56,81 +54,17 @@ class CalendarTests(unittest.TestCase):
                 calendar_fixture().replace("2026-10-02", "2026-10-03"), minimum_days=2
             )
 
-    def test_repo_pagination_forks_and_ownership(self):
-        repo = {"fork": False, "stargazers_count": 1, "owner": {"login": "mobyyyc"}}
-        pages = [
-            ([repo] * 98)
-            + [
-                dict(repo, fork=True, stargazers_count=100),
-                dict(repo, owner={"login": "other"}, stargazers_count=100),
-            ],
-            [dict(repo, stargazers_count=5)],
-        ]
-        fixture = calendar_fixture((0, 2))
-        responses = [
-            {"followers": 8},
-            fixture,
-            *pages,
-            {"total_count": 4, "incomplete_results": False},
-        ]
-        with patch.object(
-            profile, "request", side_effect=responses
-        ) as fetch, patch.object(
-            profile,
-            "parse_calendar",
-            return_value=profile.parse_calendar(fixture, minimum_days=2),
-        ):
-            data = profile.fetch_profile()
-        self.assertEqual(data["stars"], 103)
-        self.assertEqual(data["star_target"], 250)
-        self.assertIn("page=2", fetch.call_args_list[3].args[0])
-
-    def test_incomplete_pr_search_is_rejected(self):
-        fixture = calendar_fixture()
-        with patch.object(
-            profile,
-            "request",
-            side_effect=[{"followers": 8}, fixture, [], {"incomplete_results": True}],
-        ), patch.object(
-            profile,
-            "parse_calendar",
-            return_value=profile.parse_calendar(fixture, minimum_days=2),
-        ):
-            with self.assertRaisesRegex(ValueError, "Incomplete PR"):
-                profile.fetch_profile()
-
-
 class ArtworkTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.data = json.loads((ROOT / "data/profile.json").read_text())
         cls.output = profile.build(cls.data)
 
-    def test_milestone_boundary_advances(self):
-        for count, target in [
-            (0, 10),
-            (9, 10),
-            (10, 50),
-            (50, 100),
-            (100, 250),
-            (10000, 20000),
-        ]:
-            self.assertEqual(profile.next_milestone(count), target)
-        with self.assertRaises(ValueError):
-            profile.next_milestone(-1)
-
-    def test_zero_stars_does_not_invent_progress(self):
-        data = copy.deepcopy(self.data)
-        data.update(stars=0, star_target=10)
-        root = ET.fromstring(profile.stars_svg(data, "light"))
-        bar = root.find('.//{http://www.w3.org/2000/svg}rect[@class="earned"]')
-        self.assertEqual(float(bar.attrib["width"]), 0)
-
     def test_every_svg_is_valid_accessible_and_self_contained(self):
         assets = [
             (name, text) for name, text in self.output.items() if name.endswith(".svg")
         ]
-        self.assertEqual(len(assets), 12)
+        self.assertEqual(len(assets), 4)
         for name, text in assets:
             with self.subTest(name=name):
                 root = ET.fromstring(text)
@@ -147,7 +81,7 @@ class ArtworkTests(unittest.TestCase):
             r'(?:src|srcset)="https://raw.githubusercontent.com/mobyyyc/mobyyyc/main/(assets/[^?"]+)\?v=([a-f0-9]{12})"',
             readme,
         )
-        self.assertEqual(len(images), 12)
+        self.assertEqual(len(images), 4)
         for path, version in images:
             self.assertIn(path, self.output)
             self.assertEqual(

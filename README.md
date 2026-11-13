@@ -14,7 +14,7 @@ Currently exploring sound recreation, quantitative research, and AI-assisted wor
 
 <br>
 
-### Selected projects
+### Projects
 
 **[Sliplet ↗](https://github.com/mobyyyc/Sliplet)**<br>
 A native iOS app to scan and review receipts, search saved purchases, and split bills by item.<br>
@@ -34,37 +34,7 @@ Turning ideas into structured project plans with AI-assisted refinement.<br>
 
 <br>
 
-### By the numbers
-
-<a href="https://github.com/mobyyyc?tab=repositories&amp;sort=stargazers">
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mobyyyc/mobyyyc/main/assets/stars-dark.svg?v=6ade2d718592">
-  <img src="https://raw.githubusercontent.com/mobyyyc/mobyyyc/main/assets/stars-light.svg?v=5a4dbdd2e292" width="896" alt="0 stars earned on public projects. Next milestone: 10 stars.">
-</picture>
-</a>
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mobyyyc/mobyyyc/main/assets/metric-contributions-dark.svg?v=bc75f8d66b21">
-  <img src="https://raw.githubusercontent.com/mobyyyc/mobyyyc/main/assets/metric-contributions-light.svg?v=7d7e9d632ab3" width="264" alt="870 GitHub contributions, past year">
-</picture>
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mobyyyc/mobyyyc/main/assets/metric-prs-dark.svg?v=b31a9e24ede6">
-  <img src="https://raw.githubusercontent.com/mobyyyc/mobyyyc/main/assets/metric-prs-light.svg?v=53d294d71b00" width="264" alt="3 public pull requests, past year">
-</picture>
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mobyyyc/mobyyyc/main/assets/metric-followers-dark.svg?v=fa38c5219129">
-  <img src="https://raw.githubusercontent.com/mobyyyc/mobyyyc/main/assets/metric-followers-light.svg?v=d5a2c4abe884" width="264" alt="9 followers, on GitHub">
-</picture>
-
-<br>
-
-### A year of building
-
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mobyyyc/mobyyyc/main/assets/contributions-dark.svg?v=2b94a7c6e36f">
   <img src="https://raw.githubusercontent.com/mobyyyc/mobyyyc/main/assets/contributions-light.svg?v=3dd19c16ab7a" width="896" alt="870 contributions from 2025-11-09 through 2026-11-13.">
 </picture>
-
-<br>
-
-[Pull Shark](https://github.com/mobyyyc?achievement=pull-shark&amp;tab=achievements) &nbsp; · &nbsp; ![Profile views](https://komarev.com/ghpvc/?username=mobyyyc&label=PROFILE+VIEWS&color=68717d&style=flat-square)

@@ -26,8 +26,6 @@ jobs:
           python-version: '3.12'
       - name: Refresh public data and artwork
         run: python scripts/update_profile.py
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
       - name: Validate generator
         run: python -m unittest discover -s tests -v
       - name: Publish a signed update only when generated files changed
