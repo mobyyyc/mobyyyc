@@ -35,8 +35,8 @@ Turning ideas into structured project plans with AI-assisted refinement.<br>
 <br>
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mobyyyc/mobyyyc/main/assets/contributions-dark.svg?v=71dcd2e8e4cf">
-  <img src="https://raw.githubusercontent.com/mobyyyc/mobyyyc/main/assets/contributions-light.svg?v=44776b6d5b79" width="896" alt="871 contributions from 2025-11-09 through 2026-11-13.">
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mobyyyc/mobyyyc/main/assets/contributions-dark.svg?v=dde190e43ceb">
+  <img src="https://raw.githubusercontent.com/mobyyyc/mobyyyc/main/assets/contributions-light.svg?v=69a30d7d925e" width="896" alt="872 contributions from 2025-11-09 through 2026-11-13.">
 </picture>
 
 <br>
